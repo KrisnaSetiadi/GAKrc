@@ -1,0 +1,26 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Simple table styles */
+.table {
+  @apply min-w-full divide-y divide-gray-200;
+}
+.th, .td {
+  @apply px-4 py-2 text-sm;
+}
+.th {
+  @apply font-semibold text-gray-700 bg-gray-100;
+}
+.td {
+  @apply text-gray-800;
+}
+.btn {
+  @apply inline-flex items-center gap-1 rounded-xl border px-3 py-1.5 text-sm shadow-sm;
+}
+.btn-primary { @apply bg-blue-600 text-white border-blue-600 hover:bg-blue-700; }
+.btn-outline { @apply bg-white text-gray-800 border-gray-300 hover:bg-gray-50; }
+.badge { @apply px-2 py-0.5 rounded-full text-xs; }
+.badge-ok { @apply bg-green-100 text-green-700; }
+.badge-warn { @apply bg-yellow-100 text-yellow-700; }
