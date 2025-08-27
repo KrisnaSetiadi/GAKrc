@@ -7,7 +7,9 @@ import {
   deleteManySubmissions,
   getSignedImageUrl, // kalau dipakai
 } from '@/lib/storage'
-import { toCSV, download, exportWordFromHTML, formatDate } from '@/lib/utils'
+// import { toCSV, download, exportWordFromHTML, formatDate } from '@/lib/utils'
+// src/pages/Submissions.tsx
+import { toCSV, download, formatDate, exportWordSubmissionsWithImages } from '@/lib/utils'
 
 // Normalizer: coba ambil bucket & path dari berbagai kemungkinan field
 function normalizeImageRef(raw: any): { id: string; bucket?: string; path?: string; url?: string } {
@@ -83,7 +85,7 @@ export default function Submissions() {
     const data = sorted.map(s => ({ id: s.id, tanggal: s.created_at, nama: s.user_name, divisi: s.division, deskripsi: s.description, jumlah_gambar: s.images?.length || 0 }))
     download('data-terfilter.csv', toCSV(data), 'text/csv')
   }
-  const exportDOCAll = () => {
+  const exportDOCAll = async () => {
     const html = `
       <h2>Data Upload (Terfilter)</h2>
       <table border="1" cellspacing="0" cellpadding="4">
@@ -93,7 +95,7 @@ export default function Submissions() {
           <td>${s.division}</td><td>${s.description}</td><td>${s.images?.length || 0}</td>
         </tr>`).join('')}
       </table>`
-    exportWordFromHTML(html, 'data-terfilter.doc')
+      await exportWordSubmissionsWithImages(sorted, { columns: 3, imgWidth: 220 })
   }
 
   const bulkDelete = async () => {
@@ -136,6 +138,7 @@ export default function Submissions() {
               <div className="flex gap-2 ml-auto w-full sm:w-auto flex-wrap">
                 <button className="h-10 px-4 rounded-md border text-sm bg-white/80" onClick={exportCSVAll}>Download CSV</button>
                 <button className="h-10 px-4 rounded-md border text-sm bg-white/80" onClick={exportDOCAll}>Download Word</button>
+
               </div>
             </div>
             <div className="rounded-md border overflow-x-auto bg-white/80">
